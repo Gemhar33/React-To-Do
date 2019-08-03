@@ -6,7 +6,7 @@ export default function Hero(props) {
       <h1 className="subtitle is-1 is-spaced">Todo List</h1>
       <div className="hero-field">
         <input
-          className="input is-info todo-task is-large"
+          className="input is-link todo-task is-large"
           value={props.todoitem}
           type="input"
           onChange={props.handleInput}

@@ -14,15 +14,14 @@ class App extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			todoList: [
-				{ item: "Tweet", isChecked: false },
-				{ item: "Reflection", isChecked: false },
-				{ item: "Kata", isChecked: false },
-				{ item: "Commit", isChecked: false }
-			],
+			todoList: [],
 			todoitem: "",
 			filter: "all"
 		};
+	}
+
+	componentDidMount(){
+		this.setState({ todoList: JSON.parse(localStorage.getItem("allItems")) || [] });
 	}
 
 	handleInput = e => {
@@ -32,6 +31,8 @@ class App extends React.Component {
 	removeItem(i) {
 		let newItem = this.state.todoList.slice();
 		newItem.splice(i, 1);
+		// localStorage.setItem("allItems", JSON.stringify(newItem));
+		this.setItemToLocalStorage(newItem);
 		this.setState({ todoList: newItem });
 	}
 
@@ -40,19 +41,28 @@ class App extends React.Component {
 		if (task.length > 0) {
 			let newItem = this.state.todoList.slice();
 			newItem.push({ item: task, isChecked: false });
-			this.setState({ todoList: newItem });
-			this.setState({ todoitem: "" });
+			// localStorage.setItem("allItems", JSON.stringify(newItem));
+			this.setItemToLocalStorage(newItem);
+			this.setState({ todoList: newItem, todoitem: "" });
 		}
 	}
 
 	deleteAll() {
+		this.setItemToLocalStorage([]);
 		this.setState({ todoList: [] });
+		// localStorage.setItem("allItems", JSON.stringify([]));
 	}
 
 	checkItem(i) {
 		let newItem = this.state.todoList.slice();
 		newItem[i].isChecked = !this.state.todoList[i].isChecked;
+		// localStorage.setItem("allItems", JSON.stringify(newItem));
+		this.setItemToLocalStorage(newItem);
 		this.setState({ todoList: newItem });
+	}
+
+	setItemToLocalStorage(item){
+		localStorage.setItem("allItems", JSON.stringify(item));
 	}
 
 	setFilter = filter => {
